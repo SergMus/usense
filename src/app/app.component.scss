@@ -1,0 +1,99 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f4f6f6;
+
+  .content {
+    width: 380px;
+    background-color: #ffffff;
+    padding: 25px 38px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+
+    h1 {
+      margin: 15px 0 35px;
+      text-align: center;
+      font-size: 32px;
+      color: #333333;
+      font-weight: 500;
+    }
+
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .control-label {
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .form-control {
+        padding: 12px 40px 12px 15px;
+        border-radius: 5px;
+        border: 1px solid #cccccc;
+        font-size: 16px;
+      }
+
+      input[type="password"]:focus,
+      input[type="text"]:focus {
+        box-shadow: 0 0 5px rgba(246, 8, 110, 0.8);
+        border: 1px solid rgba(246, 8, 110, 0.8);
+        outline: none;
+      }
+
+      .show-pass {
+        position: absolute;
+        bottom: 12px;
+        right: 13px;
+        cursor: pointer;
+      }
+    }
+
+    .progress-section {
+      display: flex;
+      margin-top: 10px;
+
+      .progress-bar {
+        width: 33%;
+        height: 4px;
+        border: 2px solid #fff;
+        background-color: #e4e4e4;
+      }
+
+      .danger {
+        background-color: #e90f10;
+      }
+      .warning {
+        background-color: #ffad00;
+      }
+      .success {
+        background-color: #02b502;
+      }
+    }
+
+    .combination-section {
+      ul > li {
+        list-style: none;
+        align-self: center;
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .fa-circle {
+        font-size: 6px;
+      }
+      .fa-check {
+        color: #02b502;
+      }
+    }
+  }
+}
