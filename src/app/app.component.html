@@ -1,7 +1,7 @@
 <div class="container">
   <div class="content">
     <h1>{{ title }}</h1>
-    <div class="form-group">
+    <form class="form-group">
       <!-- Password input-->
       <div class="input-section">
         <label class="control-label" for="password-input"> Password </label>
@@ -11,6 +11,12 @@
           name="password"
           [type]="isShowPassword ? 'text' : 'password'"
           placeholder="Enter your password"
+          appUsedCombinations
+          (containAtLeastOneSpecialChar)="checkSymbols($event)"
+          (containAtLeastOneDigit)="checkDigits($event)"
+          (containAtLeastOneLetter)="checkLetters($event)"
+          (containAtLeastEightChars)="checkMinLength($event)"
+          (isEmpty)="checkEmpty($event)"
         />
         <span class="show-pass" (click)="togglePasswordVisibility()">
           <fa-icon [icon]="isShowPassword ? faEye : faEyeSlash"></fa-icon>
@@ -19,40 +25,84 @@
 
       <!-- Progress-->
       <div class="progress-section">
-        <div id="password-strength-1" class="progress-bar"></div>
-        <div id="password-strength-2" class="progress-bar"></div>
-        <div id="password-strength-3" class="progress-bar"></div>
+        <div
+          class="progress-bar"
+          [ngClass]="{
+            secondary: isEmpty,
+            danger:
+              (!isMinLength || isDigits || isLetters || isSymbols) && !isEmpty,
+            warning:
+              isMinLength &&
+              ((isDigits && isLetters) ||
+                (isDigits && isSymbols) ||
+                (isLetters && isSymbols)),
+            success: isDigits && isLetters && isSymbols && isMinLength
+          }"
+        ></div>
+        <div
+          class="progress-bar"
+          [ngClass]="{
+            secondary: isEmpty,
+            danger: !isMinLength && !isEmpty,
+            warning:
+              isMinLength &&
+              ((isDigits && isLetters) ||
+                (isDigits && isSymbols) ||
+                (isLetters && isSymbols)),
+            success: isDigits && isLetters && isSymbols && isMinLength
+          }"
+        ></div>
+        <div
+          class="progress-bar"
+          [ngClass]="{
+            secondary: isEmpty,
+            danger: !isMinLength && !isEmpty,
+            success: isDigits && isLetters && isSymbols && isMinLength
+          }"
+        ></div>
       </div>
 
       <!-- Password variants-->
       <div class="combination-section">
         <ul>
           <li>
-            <span class="one-symbol">
-              <fa-icon [icon]="faCircle" class="fa-circle"></fa-icon>
-              &nbsp;Symbols (a-zA-Z)
+            <span>
+              <fa-icon
+                [icon]="isLetters ? faCheck : faCircle"
+                [class]="isLetters ? 'fa-check' : 'fa-circle'"
+              ></fa-icon>
+              &nbsp;Letters (a-zA-Z)
             </span>
           </li>
           <li>
-            <span class="one-number">
-              <fa-icon [icon]="faCircle" class="fa-circle"></fa-icon>
+            <span>
+              <fa-icon
+                [icon]="isDigits ? faCheck : faCircle"
+                [class]="isDigits ? 'fa-check' : 'fa-circle'"
+              ></fa-icon>
               &nbsp;Number (0-9)
             </span>
           </li>
           <li>
-            <span class="one-special-char">
-              <fa-icon [icon]="faCircle" class="fa-circle"></fa-icon>
+            <span>
+              <fa-icon
+                [icon]="isSymbols ? faCheck : faCircle"
+                [class]="isSymbols ? 'fa-check' : 'fa-circle'"
+              ></fa-icon>
               &nbsp;Special Character (!@#$%^&*)
             </span>
           </li>
           <li>
-            <span class="eight-character">
-              <fa-icon [icon]="faCheck" size="lg" class="fa-check"></fa-icon>
+            <span>
+              <fa-icon
+                [icon]="isMinLength ? faCheck : faCircle"
+                [class]="isMinLength ? 'fa-check' : 'fa-circle'"
+              ></fa-icon>
               &nbsp;At least 8 Character
             </span>
           </li>
         </ul>
       </div>
-    </div>
+    </form>
   </div>
 </div>
