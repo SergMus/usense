@@ -12,11 +12,11 @@
           [type]="isShowPassword ? 'text' : 'password'"
           placeholder="Enter your password"
           appUsedCombinations
-          (containAtLeastOneSpecialChar)="checkSymbols($event)"
-          (containAtLeastOneDigit)="checkDigits($event)"
-          (containAtLeastOneLetter)="checkLetters($event)"
-          (containAtLeastEightChars)="checkMinLength($event)"
-          (isEmpty)="checkEmpty($event)"
+          (containAtLeastOneSpecialChar)="checkProgressCombinations($event)"
+          (containAtLeastOneDigit)="checkProgressCombinations($event)"
+          (containAtLeastOneLetter)="checkProgressCombinations($event)"
+          (containAtLeastEightChars)="checkProgressCombinations($event)"
+          (isEmpty)="checkProgressCombinations($event)"
         />
         <span class="show-pass" (click)="togglePasswordVisibility()">
           <fa-icon [icon]="isShowPassword ? faEye : faEyeSlash"></fa-icon>
@@ -29,14 +29,9 @@
           class="progress-bar"
           [ngClass]="{
             secondary: isEmpty,
-            danger:
-              (!isMinLength || isDigits || isLetters || isSymbols) && !isEmpty,
-            warning:
-              isMinLength &&
-              ((isDigits && isLetters) ||
-                (isDigits && isSymbols) ||
-                (isLetters && isSymbols)),
-            success: isDigits && isLetters && isSymbols && isMinLength
+            danger: easy && !isEmpty,
+            warning: medium,
+            success: strong
           }"
         ></div>
         <div
@@ -44,12 +39,8 @@
           [ngClass]="{
             secondary: isEmpty,
             danger: !isMinLength && !isEmpty,
-            warning:
-              isMinLength &&
-              ((isDigits && isLetters) ||
-                (isDigits && isSymbols) ||
-                (isLetters && isSymbols)),
-            success: isDigits && isLetters && isSymbols && isMinLength
+            warning: medium,
+            success: strong
           }"
         ></div>
         <div
@@ -57,7 +48,7 @@
           [ngClass]="{
             secondary: isEmpty,
             danger: !isMinLength && !isEmpty,
-            success: isDigits && isLetters && isSymbols && isMinLength
+            success: strong
           }"
         ></div>
       </div>

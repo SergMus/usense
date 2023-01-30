@@ -5,6 +5,7 @@ import {
   faEye,
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
+import { Combinations } from './interfaces/combinations';
 
 @Component({
   selector: 'app-root',
@@ -19,33 +20,72 @@ export class AppComponent {
   public faEyeSlash = faEyeSlash;
   public isShowPassword: boolean = false;
 
-  public isDigits: boolean = false;
-  public isLetters: boolean = false;
-  public isSymbols: boolean = false;
-  public isMinLength: boolean = false;
-  public isEmpty: boolean = true;
+  public isDigits?: boolean = false;
+  public isLetters?: boolean = false;
+  public isSymbols?: boolean = false;
+  public isMinLength?: boolean = false;
+  public isEmpty?: boolean = true;
 
   public togglePasswordVisibility(): void {
     this.isShowPassword = !this.isShowPassword;
   }
 
-  public checkSymbols(variant: boolean): void {
-    this.isSymbols = variant;
+  public checkProgressCombinations(variant: Combinations): void {
+    switch (variant.instance) {
+      case 'symbols':
+        this.isSymbols = variant.status;
+
+        break;
+      case 'letters':
+        this.isLetters = variant.status;
+
+        break;
+      case 'digits':
+        this.isDigits = variant.status;
+
+        break;
+      case 'minLength':
+        this.isMinLength = variant.status;
+
+        break;
+      case 'empty':
+        this.isEmpty = variant.status;
+
+        break;
+      default:
+        variant;
+        break;
+    }
   }
 
-  public checkDigits(variant: boolean): void {
-    this.isDigits = variant;
+  get easy(): boolean {
+    if (
+      !this.isMinLength ||
+      this.isDigits ||
+      this.isLetters ||
+      this.isSymbols
+    ) {
+      return true;
+    }
+    return false;
   }
 
-  public checkLetters(variant: boolean): void {
-    this.isLetters = variant;
+  get medium(): boolean {
+    if (
+      this.isMinLength &&
+      ((this.isDigits && this.isLetters) ||
+        (this.isDigits && this.isSymbols) ||
+        (this.isLetters && this.isSymbols))
+    ) {
+      return true;
+    }
+    return false;
   }
 
-  public checkMinLength(variant: boolean): void {
-    this.isMinLength = variant;
-  }
+  get strong(): boolean {
+    if (this.isDigits && this.isLetters && this.isSymbols && this.isMinLength)
+      return true;
 
-  public checkEmpty(variant: boolean): void {
-    this.isEmpty = variant;
+    return false;
   }
 }

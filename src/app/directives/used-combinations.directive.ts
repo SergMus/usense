@@ -11,16 +11,17 @@ import {
   LETTERS_REG_EXP,
   SYMBOLS_REG_EXP,
 } from '../constants/regexp';
+import { Combinations } from '../interfaces/combinations';
 
 @Directive({
   selector: '[appUsedCombinations]',
 })
 export class UsedCombinationsDirective {
-  @Output() public containAtLeastEightChars = new EventEmitter<boolean>();
-  @Output() public containAtLeastOneLetter = new EventEmitter<boolean>();
-  @Output() public containAtLeastOneDigit = new EventEmitter<boolean>();
-  @Output() public containAtLeastOneSpecialChar = new EventEmitter<boolean>();
-  @Output() public isEmpty = new EventEmitter<boolean>();
+  @Output() public containAtLeastEightChars = new EventEmitter<Combinations>();
+  @Output() public containAtLeastOneLetter = new EventEmitter<Combinations>();
+  @Output() public containAtLeastOneDigit = new EventEmitter<Combinations>();
+  @Output() public containAtLeastOneSpecialChar = new EventEmitter<Combinations>();
+  @Output() public isEmpty = new EventEmitter<Combinations>();
 
   constructor(public el: ElementRef<HTMLInputElement>) {}
 
@@ -29,39 +30,39 @@ export class UsedCombinationsDirective {
     const trimmedValue = this.el.nativeElement.value.trim();
 
     if (!trimmedValue.length) {
-      this.containAtLeastOneSpecialChar.emit(false);
-      this.containAtLeastOneDigit.emit(false);
-      this.containAtLeastOneLetter.emit(false);
-      this.isEmpty.emit(true);
+      this.containAtLeastOneSpecialChar.emit({status: false, instance: 'symbols'});
+      this.containAtLeastOneDigit.emit({status: false, instance: 'digits'});
+      this.containAtLeastOneLetter.emit({status: false, instance: 'letters'});
+      this.isEmpty.emit({status: true, instance: 'empty'});
       return;
     }
 
     if (trimmedValue.length) {
-      this.isEmpty.emit(false);
+      this.isEmpty.emit({status: false, instance: 'empty'});
     }
 
     if (trimmedValue.length >= 8) {
-      this.containAtLeastEightChars.emit(true);
+      this.containAtLeastEightChars.emit({status: true, instance: 'minLength'});
     } else {
-      this.containAtLeastEightChars.emit(false);
+      this.containAtLeastEightChars.emit({status: false, instance: 'minLength'});
     }
 
     if (SYMBOLS_REG_EXP.test(trimmedValue)) {
-      this.containAtLeastOneSpecialChar.emit(true);
+      this.containAtLeastOneSpecialChar.emit({status: true, instance: 'symbols'});
     } else {
-      this.containAtLeastOneSpecialChar.emit(false);
+      this.containAtLeastOneSpecialChar.emit({status: false, instance: 'symbols'});
     }
 
     if (DIGITS_REG_EXP.test(trimmedValue)) {
-      this.containAtLeastOneDigit.emit(true);
+      this.containAtLeastOneDigit.emit({status: true, instance: 'digits'});
     } else {
-      this.containAtLeastOneDigit.emit(false);
+      this.containAtLeastOneDigit.emit({status: false, instance: 'digits'});
     }
 
     if (LETTERS_REG_EXP.test(trimmedValue)) {
-      this.containAtLeastOneLetter.emit(true);
+      this.containAtLeastOneLetter.emit({status: true, instance: 'letters'});
     } else {
-      this.containAtLeastOneLetter.emit(false);
+      this.containAtLeastOneLetter.emit({status: false, instance: 'letters'});
     }
   }
 }
