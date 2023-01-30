@@ -12,11 +12,11 @@
           [type]="isShowPassword ? 'text' : 'password'"
           placeholder="Enter your password"
           appUsedCombinations
-          (containAtLeastOneSpecialChar)="checkProgressCombinations($event)"
-          (containAtLeastOneDigit)="checkProgressCombinations($event)"
-          (containAtLeastOneLetter)="checkProgressCombinations($event)"
-          (containAtLeastEightChars)="checkProgressCombinations($event)"
-          (isEmpty)="checkProgressCombinations($event)"
+          (containAtLeastOneSpecialChar)="checkProgress($event)"
+          (containAtLeastOneDigit)="checkProgress($event)"
+          (containAtLeastOneLetter)="checkProgress($event)"
+          (containAtLeastEightChars)="checkProgress($event)"
+          (isEmpty)="checkProgress($event)"
         />
         <span class="show-pass" (click)="togglePasswordVisibility()">
           <fa-icon [icon]="isShowPassword ? faEye : faEyeSlash"></fa-icon>
