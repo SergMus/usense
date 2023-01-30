@@ -6,6 +6,7 @@ import {
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Combinations } from './interfaces/combinations';
+import { CheckProgressService } from './services/check-progress.service';
 
 @Component({
   selector: 'app-root',
@@ -20,42 +21,34 @@ export class AppComponent {
   public faEyeSlash = faEyeSlash;
   public isShowPassword: boolean = false;
 
-  public isDigits?: boolean = false;
-  public isLetters?: boolean = false;
-  public isSymbols?: boolean = false;
-  public isMinLength?: boolean = false;
-  public isEmpty?: boolean = true;
+  constructor(private readonly checkProgressService: CheckProgressService) {}
 
   public togglePasswordVisibility(): void {
     this.isShowPassword = !this.isShowPassword;
   }
 
-  public checkProgressCombinations(variant: Combinations): void {
-    switch (variant.instance) {
-      case 'symbols':
-        this.isSymbols = variant.status;
+  public checkProgress(variant: Combinations): void {
+    this.checkProgressService.checkProgressCombinations(variant);
+  }
 
-        break;
-      case 'letters':
-        this.isLetters = variant.status;
+  get isDigits(): boolean {
+    return this.checkProgressService.isDigits;
+  }
 
-        break;
-      case 'digits':
-        this.isDigits = variant.status;
+  get isLetters(): boolean {
+    return this.checkProgressService.isLetters;
+  }
 
-        break;
-      case 'minLength':
-        this.isMinLength = variant.status;
+  get isSymbols(): boolean {
+    return this.checkProgressService.isSymbols;
+  }
 
-        break;
-      case 'empty':
-        this.isEmpty = variant.status;
-
-        break;
-      default:
-        variant;
-        break;
-    }
+  get isMinLength(): boolean {
+    return this.checkProgressService.isMinLength;
+  }
+  
+  get isEmpty(): boolean {
+    return this.checkProgressService.isEmpty;
   }
 
   get easy(): boolean {
